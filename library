@@ -1,0 +1,86 @@
+create database library;
+
+-- Create the Category table
+create table category(
+    id int primary key ,
+    name varchar(10),
+    description varchar(20)
+
+);
+
+-- Create the Book table
+create table book(
+    id INT PRIMARY KEY,
+    title VARCHAR(10),
+    author VARCHAR(10),
+    published_year varchar(4),
+    copies_available int ,
+    category_id int references category(id)
+);
+-- Create the member table
+create table Members(
+
+                            id int primary key ,
+                            name varchar(10),
+                            email varchar(20) unique ,
+                            phone_number varchar(10) unique ,
+                            Membership_status  varchar(10) check ( Membership_status='active' or Membership_status='suspended' )
+
+);
+-- Create the Staff table
+create table staff(
+                          id int primary key ,
+                          Name varchar(10),
+                          Email varchar(20) unique ,
+                          role varchar(10) check ( role='librarian' or role='assistant'),
+                          Status varchar(8) check ( Status ='active' or Status='retired' )
+);
+-- Create the Borrowing table
+create table borrowing(
+
+                              id int primary key ,
+                              Borrow_date datetime ,
+                              return_date datetime,
+                              Member_id int references members(id) ,
+                              book_id int references book(id),
+                              staff_id int references staff(id)
+);
+
+
+
+INSERT INTO category VALUE (1, 'Fiction', 'Novels and stories');
+INSERT INTO category VALUE(2, 'Science', 'Books on subject');
+INSERT INTO category VALUE(3, 'History', 'Historical books ');
+INSERT INTO category VALUE(4, 'Art', 'Books about arts');
+
+INSERT INTO book VALUE(1, 'Book1', 'Author1', '2020', 5, 1);
+INSERT INTO book VALUE(2, 'Book2', 'Author2', '2018', 3, 2);
+INSERT INTO book VALUE(3, 'Book3', 'Author3', '2015', 7, 3);
+INSERT INTO book VALUE(4, 'Book4', 'Author4', '2021', 2, 4);
+
+INSERT INTO Members VALUE (1,'arwa','arwa@example.com','0544050155','active');
+INSERT INTO Members VALUE(2, 'Rose', 'rose@example.com', '2345678901', 'suspended');
+INSERT INTO Members VALUE(3, 'Bobo', 'bobo@example.com', '3456789012', 'active');
+INSERT INTO Members VALUE(4, 'Thekra', 'thekra@example.com', '4567890123', 'active');
+
+
+INSERT INTO staff VALUE(1, 'Arwa', 'arwaf@example.com', 'librarian', 'active');
+INSERT INTO staff VALUE(2, 'Rose', 'rosef@example.com', 'assistant', 'active');
+INSERT INTO staff VALUE(3, 'Bobo', 'bobof@example.com', 'assistant', 'retired');
+INSERT INTO staff VALUE(4, 'Thekra', 'thekraf@example.com', 'librarian', 'active');
+
+INSERT INTO borrowing VALUE (1, '2024-11-01 10:00:00', '2024-11-15 10:00:00', 1, 1, 1);
+INSERT INTO borrowing VALUE (2, '2024-11-05 12:00:00', '2024-11-20 12:00:00', 2, 2, 2);
+INSERT INTO borrowing VALUE (3, '2024-11-07 14:00:00', '2024-11-21 14:00:00', 3, 3, 4);
+INSERT INTO borrowing VALUE (4, '2024-11-10 16:00:00', '2024-11-24 16:00:00', 4, 4, 1);
+
+UPDATE members SET membership_status = 'active' WHERE name = 'Rose';
+UPDATE book SET copies_available = 4 WHERE title = 'Book1';
+DELETE FROM members WHERE name = 'Bobo';
+DELETE FROM book WHERE title = 'Book3';
+SELECT * from Members;
+SELECT * from book;
+SELECT * from staff;
+SELECT * from borrowing;
+
+
